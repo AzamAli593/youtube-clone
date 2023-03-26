@@ -6,16 +6,19 @@ import { abbreviateNumber } from "js-abbreviation-number";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import SuggestedVideoCard from "./SuggestedVideoCard";
+import { BiDislike } from "react-icons/bi";
+import { RiShareForwardLine } from "react-icons/ri";
 
 const VideoDetail = () => {
   const [video, setVideo] = useState(null);
   const [relatedVideos, setRelatedVideos] = useState(null);
   const { id } = useParams();
+  const [comments, setComments] = useState(null);
 
   const options = {
     params: { id: `${id}`, hl: "en", gl: "US" },
     headers: {
-      "X-RapidAPI-Key": "03df8c4a20mshe6e1bda8b72876fp1f797ejsnc29f360acc7b",
+      "X-RapidAPI-Key": "0ca54f29e5mshfdb1005f7763d54p132969jsne1e4ae2ef245",
       "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
     },
   };
@@ -28,6 +31,12 @@ const VideoDetail = () => {
     axios
       .get("https://youtube138.p.rapidapi.com/video/related-contents/", options)
       .then((res) => setRelatedVideos(res.data));
+    axios
+      .get("https://youtube138.p.rapidapi.com/video/comments/", options)
+      .then((res) => {
+        console.log(res.data.comments);
+        setComments(res.data.comments);
+      });
   }, [id]);
 
   return (
@@ -68,16 +77,25 @@ const VideoDetail = () => {
                   {video?.author?.stats?.subscribersText}
                 </div>
               </div>
+              <div className='bg-white px-4 font-semibold py-1 flex justify-center items-center rounded-3xl ml-3'>
+                <span>Subscribe</span>
+              </div>
             </div>
-            <div className='flex text-white mt-4 md:mt-0 text-[12px] md:text-basic'>
-              <div className='flex items-center justify-center h-11 px-6 rounded-3xl bg-white/[0.15]'>
-                <AiOutlineLike className='md:text-xl text-white mr-2' />
-                {`${abbreviateNumber(video?.stats?.views, 2)} Likes`}
+            <div className='flex text-white mt-4 md:mt-0 text-sm md:text-md font-semibold md:text-basic'>
+              <div className='flex items-center justify-center h-11 px-6 py-3 rounded-3xl bg-white/[0.15]'>
+                <AiOutlineLike className='text-xl text-white mr-2' />
+                {`${abbreviateNumber(video?.stats?.views, 2)}`}
+                <div className='h-full border-l-2 mx-2 md:mx-4 '></div>
+                <BiDislike className='text-xl text-white' />
               </div>
               <div className='flex items-center justify-center h-11 px-6 rounded-3xl bg-white/[0.15] ml-4'>
-                {`${abbreviateNumber(video?.stats?.views, 2)} Views`}
+                <RiShareForwardLine className='text-2xl mr-2' /> Share
               </div>
             </div>
+          </div>
+          <div className='bg-[#383838]/[0.7] w-full text-white my-4 rounded-lg px-4 py-2 flex'>
+            {`${abbreviateNumber(video?.stats?.views, 2)} Views`}
+            <span className='truncate ml-2'>{video?.publishedTimeText}</span>
           </div>
         </div>
         <div className='flex flex-col py-6 px-4 overflow-y-auto scrollbar-hide lg:w-[350px] xl:w-[400px]'>

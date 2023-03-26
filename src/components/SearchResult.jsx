@@ -13,7 +13,7 @@ const SearchResult = ({ toggleNav }) => {
     url: `https://youtube138.p.rapidapi.com/search/`,
     params: { q: `${query}`, hl: "en", gl: "US" },
     headers: {
-      "X-RapidAPI-Key": "3bac6ae4f2msh563b268c2a4f0ffp159e7cjsnee46a82cb913",
+      "X-RapidAPI-Key": "0ca54f29e5mshfdb1005f7763d54p132969jsne1e4ae2ef245",
       "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
     },
   };
